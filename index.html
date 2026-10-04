@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>❤️ For My Babe ❤️</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#000;
+    background-image:
+      radial-gradient(circle at 50% -10%, rgba(255,30,60,.18), transparent 55%),
+      radial-gradient(circle at 50% 110%, rgba(255,30,60,.12), transparent 55%);
+    background-attachment:fixed;
+    color:#ffd9de;
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* ---------- falling hearts + floating words layer ---------- */
+  #rain,#pops{position:fixed;inset:0;overflow:hidden;pointer-events:none;}
+  #rain{z-index:0;}
+  #pops{z-index:80;}
+  main{position:relative;z-index:5;}
+
+  .rain-heart{
+    position:absolute;top:-70px;
+    filter:drop-shadow(0 0 6px #ff1e3c);
+    animation:fall linear forwards;
+  }
+  @keyframes fall{
+    to{transform:translateY(115vh) rotate(360deg);opacity:0;}
+  }
+
+  .float-word{
+    position:absolute;bottom:-60px;
+    color:rgba(255,30,60,.18);
+    font-weight:800;white-space:nowrap;
+    letter-spacing:1px;
+    animation:floatUp linear forwards;
+  }
+  @keyframes floatUp{
+    to{transform:translateY(-115vh);}
+  }
+
+  /* ---------- tap pop ---------- */
+  .pop-heart{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    filter:drop-shadow(0 0 10px #ff1e3c);
+    animation:popUp 1.1s ease-out forwards;
+  }
+  @keyframes popUp{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.2);}
+    25%{opacity:1;transform:translate(-50%,-50%) scale(1.5);}
+    100%{opacity:0;transform:translate(-50%,-160%) scale(.9);}
+  }
+  .pop-word{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    color:#ff1e3c;
+    font-weight:800;
+    font-size:14px;
+    white-space:nowrap;
+    text-shadow:0 0 12px #ff1e3c,0 0 24px rgba(255,30,60,.6);
+    animation:popWord 1.4s ease-out forwards;
+  }
+  @keyframes popWord{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.6);}
+    20%{opacity:1;transform:translate(-50%,-90%) scale(1);}
+    100%{opacity:0;transform:translate(-50%,-230%) scale(1);}
+  }
+  .burst-heart{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    animation:burst 1s ease-out forwards;
+    filter:drop-shadow(0 0 8px #ff1e3c);
+  }
+  @keyframes burst{
+    0%{opacity:1;transform:translate(-50%,-50%) scale(.4);}
+    100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1.2);}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;padding:40px 22px;
+  }
+  .heart-big{
+    font-size:64px;line-height:1;
+    animation:beat 1.4s infinite ease-in-out;
+    filter:drop-shadow(0 0 22px #ff1e3c);
+    margin-bottom:14px;
+  }
+  @keyframes beat{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.18);}
+  }
+  h1{
+    font-size:clamp(2rem,9vw,4rem);
+    margin:0 0 14px;
+    color:#fff;
+    letter-spacing:1px;
+    text-shadow:0 0 14px #ff1e3c,0 0 44px rgba(255,30,60,.65);
+  }
+  .love-line{
+    font-size:clamp(1rem,4.6vw,1.5rem);
+    margin:0 0 8px;
+    color:#ffb3bf;
+  }
+  .love-line b{color:#ff1e3c;text-shadow:0 0 12px rgba(255,30,60,.8);}
+  .sub{
+    font-size:clamp(.85rem,3.6vw,1rem);
+    color:rgba(255,30,60,.65);
+    margin:0 0 8px;
+  }
+  .tiny{
+    font-size:.75rem;
+    color:rgba(255,30,60,.45);
+    margin-top:22px;
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    margin-top:28px;
+    padding:18px 30px;
+    font-size:clamp(1rem,4.4vw,1.25rem);
+    font-weight:800;
+    font-family:inherit;
+    border-radius:60px;
+    border:2px solid #ff1e3c;
+    background:linear-gradient(135deg,#1a0005,#ff1e3c22);
+    color:#ff1e3c;
+    cursor:pointer;
+    box-shadow:0 0 20px rgba(255,30,60,.55), inset 0 0 22px rgba(255,30,60,.12);
+    animation:pulse 1.9s infinite;
+    transition:transform .15s;
+  }
+  .btn:active{transform:scale(.95);}
+  @keyframes pulse{
+    50%{box-shadow:0 0 38px rgba(255,30,60,.95), inset 0 0 30px rgba(255,30,60,.28);}
+  }
+  .btn.small{
+    margin-top:16px;
+    padding:12px 22px;
+    font-size:.95rem;
+    animation:none;
+    box-shadow:0 0 16px rgba(255,30,60,.5);
+  }
+
+  /* ---------- gift section ---------- */
+  .hidden{display:none;}
+  #gift{
+    padding:70px 18px 90px;
+    animation:fadeUp .8s ease both;
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(40px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .sec-title{
+    text-align:center;
+    font-size:clamp(1.3rem,6vw,2rem);
+    color:#fff;
+    margin:0 0 6px;
+    text-shadow:0 0 16px rgba(255,30,60,.7);
+  }
+  .sec-sub{
+    text-align:center;
+    color:rgba(255,30,60,.65);
+    font-size:.9rem;
+    margin:0 0 28px;
+  }
+
+  /* ---------- notes: 2 x 2 x 2 layout ---------- */
+  .notes{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    max-width:540px;
+    margin:0 auto;
+    align-items:start;
+  }
+
+  /* ---------- flip cards ---------- */
+  .flip{
+    perspective:1100px;
+    cursor:pointer;
+    aspect-ratio:3/4;
+    width:100%;
+  }
+  .flip-inner{
+    position:relative;
+    width:100%;height:100%;
+    transform-style:preserve-3d;
+    transition:transform .9s cubic-bezier(.2,.8,.2,1);
+  }
+  .flip.open .flip-inner{transform:rotateY(180deg);}
+  .face{
+    position:absolute;inset:0;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    border-radius:18px;
+    border:2px solid rgba(255,30,60,.55);
+    background:linear-gradient(160deg,#1a0005,#000);
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:14px;text-align:center;
+    overflow:hidden;
+    box-shadow:0 0 22px rgba(255,30,60,.20), inset 0 0 34px rgba(255,30,60,.07);
+  }
+  .face.back{
+    transform:rotateY(180deg);
+    padding:0;
+    justify-content:flex-end;
+    background:#000;
+  }
+  .num{
+    font-size:1.6rem;font-weight:900;
+    color:#ff1e3c;opacity:.85;
+    text-shadow:0 0 14px #ff1e3c;
+    margin-bottom:6px;
+  }
+  .face.front p{
+    margin:0;
+    font-size:clamp(.82rem,3.4vw,1rem);
+    font-weight:700;
+    color:#ffd9de;
+    line-height:1.35;
+  }
+  .hint{
+    margin-top:10px;
+    font-size:.68rem;
+    letter-spacing:1px;
+    color:rgba(255,30,60,.55);
+    text-transform:uppercase;
+  }
+  .face.back img{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    object-fit:cover;
+  }
+  .face.back::after{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.92),rgba(0,0,0,.15) 50%,rgba(0,0,0,.35));
+  }
+  .cap{
+    position:relative;z-index:3;
+    width:100%;
+    padding:10px 6px;
+    font-size:.8rem;
+    font-weight:800;
+    color:#ff1e3c;
+    text-shadow:0 0 10px #000,0 0 16px rgba(255,30,60,.8);
+  }
+  .fallback{
+    display:none;
+    position:absolute;inset:0;
+    z-index:2;
+    flex-direction:column;
+    align-items:center;justify-content:center;
+    color:#ff1e3c;font-size:2rem;
+    text-shadow:0 0 18px #ff1e3c;
+  }
+  .fallback span{font-size:.8rem;margin-top:6px;}
+  .face.back.noimg .fallback{display:flex;}
+  .face.back.noimg::after{background:none;}
+
+  /* guess card */
+  .guess{
+    width:min(340px,88vw);
+    margin:0 auto;
+    aspect-ratio:3/4;
+  }
+  .big-q{
+    font-size:clamp(1.4rem,6.5vw,2rem);
+    font-weight:900;
+    color:#fff;
+    text-shadow:0 0 18px rgba(255,30,60,.8);
+  }
+
+  .footer-love{
+    text-align:center;
+    margin:60px auto 0;
+    max-width:520px;
+    font-size:clamp(.9rem,3.8vw,1.1rem);
+    font-weight:700;
+    color:#ff1e3c;
+    text-shadow:0 0 16px rgba(255,30,60,.7);
+    line-height:1.7;
+  }
+</style>
+</head>
+<body>
+
+<div id="rain"></div>
+<div id="pops"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="heart-big">❤️</div>
+    <h1>I Love You Babe</h1>
+    <p class="love-line">I love you <b>billion</b> · <b>trillion</b> · <b>quintillion</b> ❤️</p>
+    <p class="sub">…and a little more every single day</p>
+    <button class="btn" id="marryBtn">Tap → Get Married Darling ❤️</button>
+    <p class="tiny">(tap anywhere for hearts ❤️)</p>
+  </section>
+
+  <!-- ================= GIFT ================= -->
+  <section id="gift" class="hidden">
+
+    <h2 class="sec-title">6 Little Notes For You ❤️</h2>
+    <p class="sec-sub">tap each one, babe…</p>
+    <div class="notes" id="notes"></div>
+
+    <h2 class="sec-title" style="margin-top:70px">One last thing…</h2>
+    <p class="sec-sub">are you ready?</p>
+
+    <div class="flip guess" id="guessCard">
+      <div class="flip-inner">
+        <div class="face front">
+          <div class="big-q">Guess what? 🤔</div>
+          <button class="btn small" id="whatBtn">What, babe? ❤️</button>
+        </div>
+        <div class="face back">
+          <img id="finalImg" alt="">
+          <div class="fallback">❤️<br><span>my whole world</span></div>
+          <div class="cap">You're already mine ❤️</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer-love">
+      i love you ❤️ you're mine ❤️ lets get married ❤️
+    </p>
+  </section>
+</main>
+
+<script>
+/* ================== CONFIG ==================
+   Drive file IDs — make sure each file is shared as
+   "Anyone with the link → Viewer", otherwise images won't load.
+*/
+const NOTE_IDS = [
+  '1mhJStmdEIpfRe7fVuGj6qMXY-8MIJxAC',
+  '1UlW44SEWM5wiNOC77n2tUYKMPh5RopEO',
+  '1D2OCfzXjAo64pNoxiQvF5r9dPtlF16F4',
+  '19Gk9SShNdQnEX8GZGZzU_Ivrb8og4oSh',
+  '1M4I4_Q1hJF6iJaNJDWRMv9OxkPuwfhUh',
+  '1lYqybV3McMomJcPPzH1I_Jta5AMacVwf'
+];
+const FINAL_ID = '101xGgJr2lPfANs6cIlG4IO1WzlcXBVzZ';
+
+const imgSrc = id => `https://drive.google.com/thumbnail?id=${id}&sz=w1200`;
+
+const MSGS = [
+  "You're one in a million ❤️",
+  "I can't live without you ❤️",
+  "You're my whole world ❤️",
+  "My heart beats only for you ❤️",
+  "Forever & always, babe ❤️",
+  "Let's get married, darling ❤️"
+];
+const CAPS = ["my everything","my forever","my home","my heartbeat","my soulmate","my wife 😉"];
+
+/* ================== BUILD NOTES ================== */
+const notesWrap = document.getElementById('notes');
+
+MSGS.forEach((msg, i) => {
+  const card = document.createElement('div');
+  card.className = 'flip note';
+  card.innerHTML = `
+    <div class="flip-inner">
+      <div class="face front">
+        <div class="num">${i + 1}</div>
+        <p>${msg}</p>
+        <span class="hint">tap to open ❤️</span>
+      </div>
+      <div class="face back">
+        <img src="${imgSrc(NOTE_IDS[i])}" alt="">
+        <div class="fallback">❤️<br><span>your beautiful face</span></div>
+        <div class="cap">${CAPS[i]}</div>
+      </div>
+    </div>`;
+  card.addEventListener('click', () => {
+    card.classList.toggle('open');
+    const r = card.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2, 10);
+    popWord(r.left + r.width / 2, r.top + r.height / 2);
+  });
+  notesWrap.appendChild(card);
+
+  const img = card.querySelector('img');
+  img.addEventListener('error', () => {
+    img.remove();
+    card.querySelector('.face.back').classList.add('noimg');
+  });
+});
+
+/* ================== GUESS CARD ================== */
+const guessCard = document.getElementById('guessCard');
+const finalImg = document.getElementById('finalImg');
+finalImg.src = imgSrc(FINAL_ID);
+finalImg.addEventListener('error', () => {
+  finalImg.remove();
+  guessCard.querySelector('.face.back').classList.add('noimg');
+});
+guessCard.addEventListener('click', () => {
+  guessCard.classList.toggle('open');
+  const r = guessCard.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + r.height / 2, 20);
+});
+
+/* ================== MARRY BUTTON ================== */
+document.getElementById('marryBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  burst(e.clientX, e.clientY, 26);
+  const gift = document.getElementById('gift');
+  gift.classList.remove('hidden');
+  setTimeout(() => gift.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+});
+
+/* ================== TAP HEARTS ================== */
+const pops = document.getElementById('pops');
+const POP_WORDS = [
+  'I love you ❤️', "You're mine ❤️", "Let's get married ❤️",
+  'Babe ❤️', 'Forever ❤️', 'Mine ❤️', 'I love you ❤️',
+  'My wife ❤️', 'Kiss me ❤️'
+];
+
+function popWord(x, y) {
+  const w = document.createElement('div');
+  w.className = 'pop-word';
+  w.textContent = POP_WORDS[Math.floor(Math.random() * POP_WORDS.length)];
+  w.style.left = x + 'px';
+  w.style.top = y + 'px';
+  pops.appendChild(w);
+  setTimeout(() => w.remove(), 1450);
+}
+
+function burst(x, y, n) {
+  for (let i = 0; i < (n || 14); i++) {
+    const h = document.createElement('div');
+    h.className = 'burst-heart';
+    h.textContent = '❤️';
+    const a = Math.random() * Math.PI * 2;
+    const d = 60 + Math.random() * 170;
+    h.style.left = x + 'px';
+    h.style.top = y + 'px';
+    h.style.setProperty('--tx', Math.cos(a) * d + 'px');
+    h.style.setProperty('--ty', Math.sin(a) * d + 'px');
+    h.style.fontSize = (12 + Math.random() * 20) + 'px';
+    pops.appendChild(h);
+    setTimeout(() => h.remove(), 1100);
+  }
+}
+
+document.addEventListener('pointerdown', e => {
+  const x = e.clientX, y = e.clientY;
+
+  const h = document.createElement('div');
+  h.className = 'pop-heart';
+  h.textContent = '❤️';
+  h.style.left = x + 'px';
+  h.style.top = y + 'px';
+  h.style.fontSize = (18 + Math.random() * 24) + 'px';
+  pops.appendChild(h);
+  setTimeout(() => h.remove(), 1150);
+
+  if (Math.random() > 0.35) popWord(x, y - 10);
+});
+
+/* ================== RAIN OF HEARTS ================== */
+const rain = document.getElementById('rain');
+
+setInterval(() => {
+  if (document.hidden) return;
+  const h = document.createElement('div');
+  h.className = 'rain-heart';
+  h.textContent = '❤️';
+  h.style.left = Math.random() * 100 + 'vw';
+  h.style.fontSize = (12 + Math.random() * 22) + 'px';
+  h.style.opacity = (0.25 + Math.random() * 0.55).toFixed(2);
+  const dur = 7 + Math.random() * 8;
+  h.style.animationDuration = dur + 's';
+  rain.appendChild(h);
+  setTimeout(() => h.remove(), dur * 1000 + 300);
+}, 300);
+
+/* ================== FLOATING LOVE WORDS ================== */
+const FLOAT_WORDS = [
+  'i love you', "you're mine", 'lets get married',
+  'babe ❤️', 'forever', 'my love', 'i love you', 'mine ❤️'
+];
+
+setInterval(() => {
+  if (document.hidden) return;
+  const t = document.createElement('div');
+  t.className = 'float-word';
+  t.textContent = FLOAT_WORDS[Math.floor(Math.random() * FLOAT_WORDS.length)];
+  t.style.left = Math.random() * 90 + 'vw';
+  t.style.fontSize = (12 + Math.random() * 20) + 'px';
+  const dur = 14 + Math.random() * 10;
+  t.style.animationDuration = dur + 's';
+  rain.appendChild(t);
+  setTimeout(() => t.remove(), dur * 1000 + 300);
+}, 1400);
+</script>
+</body>
+</html>
